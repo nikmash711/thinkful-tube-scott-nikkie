@@ -22,6 +22,7 @@ const thinkfulTube = (function() {
     const decArr = response.items.map(item => {return{
       id: item.id.videoId,
       title: item.snippet.title,
+      channel: item.snippet.channelId,
       thumbnail: item.snippet.thumbnails.default.url
     };
     });
@@ -31,10 +32,13 @@ const thinkfulTube = (function() {
 
   const generateVideoItemHtml = function(video) {
     const base_video_url = 'https://www.youtube.com/watch?v=';
+    const base_channel = 'https://www.youtube.com/channel/';
     return `
     <li data-video-id=${video.id}>
       <h3>${video.title}</h3>
       <a href ="${base_video_url}${video.id}" target = "_blank" ><img src="${video.thumbnail}" /> </a>
+      <br>
+      <a href = "${base_channel}${video.channel}">More from this channel</a>
     </li>
     `;
   };
