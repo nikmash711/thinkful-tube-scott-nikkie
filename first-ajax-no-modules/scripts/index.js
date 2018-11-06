@@ -41,7 +41,8 @@ const fetchVideos = function(searchTerm, callback) {
   const query = {
     q: searchTerm,
     part: 'snippet',
-    key: API_KEY
+    key: API_KEY,
+    maxResults: 10
   };
   $.getJSON(BASE_URL, query, callback);
 };
@@ -62,20 +63,20 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-
-
-  const decoratedResponse = response.items.map(item => {return{
+  const decArr = response.items.map(item => {return{
     id: item.id.videoId,
     title: item.snippet.title,
-    thumbnail: item.snippet.thumbnails.high.url
+    thumbnail: item.snippet.thumbnails.default.url
   };
   });
-  console.log(decoratedResponse);
-  console.log(generateVideoItemHtml(decoratedResponse[0]));
-  return decoratedResponse;
+  // console.log(decoratedResponse);
+  // console.log(generateVideoItemHtml(decoratedResponse[0]));
+  addVideosToStore(decArr);
+  render();
+  // return decArr;
 };
 
-fetchVideos('cats', decorateResponse);
+// fetchVideos('cats', decorateResponse);
 
 
 /**
@@ -106,7 +107,7 @@ const generateVideoItemHtml = function(video) {
 // 1. Set the received array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
-
+  store.videos = videos;
 };
 
 
@@ -119,7 +120,8 @@ const addVideosToStore = function(videos) {
 // 2. Add this array of DOM elements to the appropriate DOM element
 // TEST IT!
 const render = function() {
-
+  console.log(store.videos);
+  $('.results').html(store.videos.map(video=>generateVideoItemHtml(video)).join(''));
 };
 
 /**
@@ -139,11 +141,18 @@ const render = function() {
 //   g) Inside the callback, run the `render` function
 // TEST IT!
 const handleFormSubmit = function() {
-
+  $('form').submit(event =>{
+    event.preventDefault();
+    const searchTerm = $('#search-term').val();
+    $('#search-term').val('');
+    fetchVideos(searchTerm, decorateResponse); //is this step e? 
+  });
 };
 
 // When DOM is ready:
 $(function () {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
+  handleFormSubmit();
+  
 });
