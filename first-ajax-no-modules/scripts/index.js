@@ -1,6 +1,6 @@
 'use strict';
-const API_KEY = 'YOUR_KEY_HERE';
-//AIzaSyCRbaNBF08000E_9OCK8S8YOa8HPbBNGRE
+const API_KEY = 'AIzaSyCRbaNBF08000E_9OCK8S8YOa8HPbBNGRE';
+
 /*
   We want our store to hold an array of "decorated" video objects - i.e. objects that
   have been transformed into ONLY the necessary data we're displaying on our page.
@@ -20,7 +20,7 @@ const store = {
 
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = '';
+const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 
 /**
  * @function fetchVideos
@@ -37,7 +37,14 @@ const BASE_URL = '';
 //
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
-
+  const query = { 
+    q: searchTerm,
+    part: 'snippet',
+    type: 'videos',
+    maxResults: 25,
+    key: API_KEY
+  };
+  $.getJSON(BASE_URL, query, callback);
 };
 
 /**
@@ -56,8 +63,11 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-
+  // console.log(response);
 };
+
+// fetchVideos('cats', decorateResponse);
+
 
 /**
  * @function generateVideoItemHtml
@@ -122,3 +132,4 @@ $(function () {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
 });
+
