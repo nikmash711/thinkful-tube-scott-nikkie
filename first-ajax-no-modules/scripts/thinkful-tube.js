@@ -12,7 +12,7 @@ const thinkfulTube = (function() {
       q: searchTerm,
       part: 'snippet',
       key: API_KEY,
-      maxResults: 10
+      //maxResults: 10
     };
     $.getJSON(BASE_URL, query, callback);
   };
@@ -25,6 +25,7 @@ const thinkfulTube = (function() {
       channel: item.snippet.channelId,
       thumbnail: item.snippet.thumbnails.default.url
     };
+    const nextPageToken = response.nextPageToken;
     });
     store.addVideosToStore(decArr);
     render();
@@ -40,12 +41,16 @@ const thinkfulTube = (function() {
       <br>
       <a href = "${base_channel}${video.channel}">More from this channel</a>
     </li>
+
     `;
   };
+
+  const generate
 
   const render = function() {
     //console.log(store.videos);
     $('.results').html(store.videos.map(video=>generateVideoItemHtml(video)).join(''));
+    //$('buttons').html()
   };
 
 
