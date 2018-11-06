@@ -18,6 +18,7 @@ const thinkfulTube = (function() {
   };
 
   const decorateResponse = function(response) {
+    console.log(response);
     const decArr = response.items.map(item => {return{
       id: item.id.videoId,
       title: item.snippet.title,
@@ -29,10 +30,11 @@ const thinkfulTube = (function() {
   };
 
   const generateVideoItemHtml = function(video) {
+    const base_video_url = 'https://www.youtube.com/watch?v=';
     return `
     <li data-video-id=${video.id}>
-      <img src="${video.thumbnail}" />
       <h3>${video.title}</h3>
+      <a href ="${base_video_url}${video.id}" target = "_blank" ><img src="${video.thumbnail}" /> </a>
     </li>
     `;
   };
