@@ -6,12 +6,15 @@ const store = (function() {
     //{}
   ];
 
-  // const tokens = [
-  //
-  // ];
+  const nextToken = undefined;
+  const prevToken = undefined;
 
-  const updateTokens = function() {
+  const updateNextToken = function(nextToken) {
+    this.nextToken = nextToken;
+  };
 
+  const updatePrevToken = function(prevToken) {
+    this.prevToken = prevToken;
   };
 
   const addVideosToStore = function(videos) {
@@ -21,5 +24,9 @@ const store = (function() {
   return {
     videos,
     addVideosToStore,
+    nextToken,
+    prevToken, 
+    updateNextToken,
+    updatePrevToken
   };
 }());
