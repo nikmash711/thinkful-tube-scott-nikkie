@@ -1,3 +1,4 @@
+/*eslint-env jquery*/
 'use strict';
 const API_KEY = 'AIzaSyCRbaNBF08000E_9OCK8S8YOa8HPbBNGRE';
 
@@ -20,7 +21,7 @@ const store = {
 
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 /**
  * @function fetchVideos
@@ -37,11 +38,9 @@ const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 //
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
-  const query = { 
+  const query = {
     q: searchTerm,
     part: 'snippet',
-    type: 'videos',
-    maxResults: 25,
     key: API_KEY
   };
   $.getJSON(BASE_URL, query, callback);
@@ -63,11 +62,17 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-  const decoratedVideos =[];
-  response.items.map(item=>decoratedVideos.push({id: item.id.videoId, title: item.snippet.title, thumbnail: item.snippet.thumbnails.high.url}));
-  // console.log(response);
-  console.log(decoratedVideos);
-  return decoratedVideos; 
+
+
+  const decoratedResponse = response.items.map(item => {return{
+    id: item.id.videoId,
+    title: item.snippet.title,
+    thumbnail: item.snippet.thumbnails.high.url
+  };
+  });
+  console.log(decoratedResponse);
+  console.log(generateVideoItemHtml(decoratedResponse[0]));
+  return decoratedResponse;
 };
 
 fetchVideos('cats', decorateResponse);
@@ -83,8 +88,14 @@ fetchVideos('cats', decorateResponse);
 // 1. Using the decorated object, return an HTML string containing all the expected
 // TEST IT!
 const generateVideoItemHtml = function(video) {
-
+  return `
+  <li data-video-id=${video.id}>
+    <img src="${video.thumbnail}" />
+    <h3>${video.title}</h3>
+  </li>
+  `;
 };
+
 
 /**
  * @function addVideosToStore
@@ -136,4 +147,3 @@ $(function () {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
 });
-
