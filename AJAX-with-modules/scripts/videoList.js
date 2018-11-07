@@ -4,6 +4,7 @@
 /* eslint-disable-next-line no-unused-vars */
 const videoList = (function() {
 
+  //Using the decorated object, return an HTML string containing all the expected
   const generateVideoItemHtml = function(video) {
     const base_video_url = 'https://www.youtube.com/watch?v=';
     const base_channel = 'https://www.youtube.com/channel/';
@@ -18,6 +19,7 @@ const videoList = (function() {
     `;
   };
 
+  //Using the tokens passed in, return either both buttons or just next 
   const generateButtonTokens = function(nextPageToken,prevPageToken){
     //put in a previous element only if it exists (if you go next then prev, it shouldnt have prev again bc its the first page - but it does FIX)
     if (prevPageToken){
@@ -31,43 +33,47 @@ const videoList = (function() {
     `;
   };
 
+  //render the results li elements and also the buttons to the DOM 
   const render = function() {
     $('.results').html(store.videos.map(video=>generateVideoItemHtml(video)).join(''));
     $('.buttons').html(generateButtonTokens(store.nextToken, store.prevToken));
   };
 
+  //event listener for when user searches and clicks go
   const handleFormSubmit = function() {
     $('form').submit(event =>{
       event.preventDefault();
       const searchTerm = $('#search-term').val();
       //add searchTerm in the store 
       // $('#search-term').val('');
+      
+      //fetch videos with this searchterm
       API.fetchVideos(searchTerm, API.decorateResponse); //is this step e?
     });
   };
 
+  //handles user clicking next button and fetching next videos
   const handleNextButtonSubmit = function(){
     $('.buttons').on('click', '.next', event =>{
-      // event.preventDefault();
-      //we want to somehow use the data-nexttoken to render the next page. But how do we do that using the token?
       API.fetchNextVideos($('#search-term').val(), API.decorateResponse); //we need the searchTerm 
     });
   };
 
+  //handles user clicking prev button and fetching prev videos
   const handlePrevButtonSubmit = function(){
     $('.buttons').on('click', '.prev', event =>{
-      // event.preventDefault();
-      //we want to somehow use the data-nexttoken to render the next page. But how do we do that using the token?
       API.fetchPrevVideos($('#search-term').val(), API.decorateResponse); //we need the searchTerm 
     });
   };
 
+  //bind all the event listeners so we can call it when the document loads
   function bindEventListeners() {
     handleFormSubmit();
     handleNextButtonSubmit();
     handlePrevButtonSubmit();
   }
 
+  //these are the exposed values that we'll have to call elsewhere
   return {
     bindEventListeners,
     render

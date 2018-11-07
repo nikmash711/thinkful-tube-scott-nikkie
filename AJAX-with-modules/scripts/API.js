@@ -44,7 +44,7 @@ const API = (function(){
 
   // Uses Youtube API response to create an array of "decorated" video objects
   const decorateResponse = function(response) {
-    //map through the response.items array and pick out what we want, capture it in a variable, and set our videos n store to that variable. Then render. 
+    //map through the response.items array and pick out what we want, capture it in a variable, and set our videos n store to that variable.
     //Also update the tokens if necassary 
     const decArr = response.items.map(item => {
       return{
@@ -59,9 +59,14 @@ const API = (function(){
     if (response.prevPageToken){
       store.updatePrevToken(response.prevPageToken);
     }
+    else{
+      store.updatePrevToken('');
+    }
     //grab prev token if it exists 
     store.updateNextToken( response.nextPageToken);
     store.setVideos(decArr);
+
+    //render
     videoList.render();
   };
 
