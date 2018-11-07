@@ -63,7 +63,7 @@ const API = (function(){
       store.updatePrevToken('');
     }
     //grab prev token if it exists 
-    store.updateNextToken( response.nextPageToken);
+    store.updateNextToken(response.nextPageToken);
     store.setVideos(decArr);
 
     //render

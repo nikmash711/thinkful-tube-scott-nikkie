@@ -25,6 +25,7 @@ const store = (function() {
     this.videos = videos;
   };
 
+  //return these exposed values bc we'll need to access them elsewhere
   return {
     videos,
     setVideos,
